@@ -1,29 +1,24 @@
-{% set name = "genson" %}
-{% set version = "1.0.2" %}
-{% set bundle = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash = "8b6e2e08bc0cbfe10f957f390b5f631ca58036c9f1b0ebdde3553722c44c56fa" %}
-{% set build = 0 %}
+{% set version = "1.1.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: genson
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  {{ hash_type }}: {{ hash }}
+  url: https://pypi.io/packages/source/g/genson/genson-{{ version }}.tar.gz
+  sha256: 7557f5c989ddc194a4dbdfc828520d911922f932dc076c7e850774162f61d6d5
 
 build:
+  number: 0
+  noarch: python
+  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
   entry_points:
     - genson = genson.cli:main
-  number: {{ build }}
-  script: python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
   host:
     - python
-    - setuptools
+    - pip
 
   run:
     - python
