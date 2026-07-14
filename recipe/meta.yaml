@@ -5,25 +5,24 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/g/genson/genson-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/g/genson/genson-{{ version }}.tar.gz
   sha256: bc7f1c1bae87a21ca44d81149aec95a3f4468d676de9b8b08caa064f3c50b3da
-  patches:
-    - 75.patch
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation -vv .
+  noarch: python
+  skip: True  # [py<310]
+  script: "{{ PYTHON }} -m pip install --no-deps --no-build-isolation -vv ."
   entry_points:
     - genson = genson.__main__:main
-  skip: true  # [py<39]
 
 requirements:
-  build:
   host:
     - python
     - wheel
     - pip
-    - setuptools
+    - setuptools >=44
+
   run:
     - python
 
@@ -36,10 +35,9 @@ test:
     - pip
     - jsonschema >=4.0.0
     - pytest
-    - python
   commands:
     - pip check
-    - pytest test -v -k "not test_no_input"
+    - pytest test -vv
     - genson --help
 
 about:
@@ -47,7 +45,7 @@ about:
   license: MIT
   license_file: LICENSE
   license_family: MIT
-  summary: GenSON is a powerful, user-friendly JSON Schema generator.
+  summary: 'GenSON is a powerful, user-friendly JSON Schema generator.'
   dev_url: https://github.com/wolverdude/genson/
   doc_url: https://github.com/wolverdude/GenSON/blob/master/README.rst
   description: GenSON is a powerful, user-friendly JSON Schema generator built in Python.
